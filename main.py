@@ -48,6 +48,14 @@ def register(request: Request):
 def reg(name: str = Form('name'), username: str= Form("username"), password: str= Form("password")):
     with get_db() as db:
         with db.cursor() as cur:
+            cur.execute("select * from users where name=%s",(name,))
+            name_data=cur.fetchone()
+            if name_data:
+                return {"Msg":"Name is already taken"}
+            cur.execute("select * from users where name=%s",(username,))
+            username_data=cur.fetchone()
+            if username_data:
+                return {"Msg":"Username is already taken"}
             hashed_password=ph.hash(password)
             cur.execute("insert into users (username,password,name) values (%s,%s,%s)",(username,hashed_password,name))
             db.commit()
