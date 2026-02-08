@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/favicon1-nobg.png">
+    <title>Chatter's Spot-Login</title>
+    <style>
+        .topbar {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0px 24px;
+            gap: 10px;
+            background-color: rgb(32, 193, 218);
+            color: white;
+            box-sizing: border-box;
+        }
+        
+        .topcontent {
+            white-space: nowrap;
+            font-size: 2rem;
+            font-weight: 600;
+            padding: 10px;
+        }
+        
+        body {
+            margin: 0px;
+        }
+        
+        .home {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .page {
+            min-height: calc(100vh - 64px);
+            display: flex;
+            padding: 30px;
+            justify-content: center;
+            align-items: start;
+            background-color: #cccdd0;
+        }
+        
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+        }
+        
+        .hero {
+            height: calc(30vh - 64px);
+            background-image: url("static/images/scene.webp");
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .but {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+        
+        .field label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .field input {
+            padding: 12px 14px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+        }
+        
+        .field input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .but {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+        }
+        
+        .forgot {
+            text-align: right;
+            margin-bottom: 16px;
+        }
+        
+        .forgot a {
+            font-size: 13px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper .icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .input-wrapper input {
+            box-sizing: border-box;
+            padding: 12px 14px 12px 40px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            width: 100%;
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .input-wrapper input:focus+.icon,
+        .input-wrapper input:focus~.icon {
+            opacity: 1;
+        }
+        
+        .register {
+            display: flex;
+            justify-content: center;
+            padding: 2px;
+        }
+        
+        .register a {
+            font-size: 16px;
+            padding-left: 1px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+        
+        .foot {
+            font-size: 13px;
+            color: #666;
+            margin-top: 0.8rem;
+            line-height: 1.4;
+            text-align: center;
+        }
+        /* optional */
+        
+        .flash-message {
+            color: red;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body style="background-color:grey">
+    <header class="topbar">
+        <p class="topcontent">Chatter's Spot</p>
+    </header>
+
+    <main class="page">
+        <div class="card">
+            <form id="logform" action="/login_user/" method="POST">
+                <h2 class="title">Login</h2>
+                <h2 class="subtitle">Welcome Back</h2>
+                <div class="field username">
+                    <label for="username">Username</label>
+                    <div class="input-wrapper">
+                        <span class="icon">🛂</span>
+                        <input type="username" name="username" id="username" placeholder="Username" required>
+                    </div>
+                </div>
+                <div class="field password">
+                    <label for="password">Password</label>
+                    <div class="input-wrapper">
+                        <span class="icon">🔒</span>
+                        <input name="password" id="password" type="password" placeholder="*********" required>
+                    </div>
+                </div>
+                <button type="submit" class="but" style="background-color:rgb(32,193,218); color:white;">Login</button>
+                <p class="register">Don't have an account?<a href="/register">Register here</a></p>
+            </form>
+        </div>
+    </main>
+
+</body>
+
+</html>

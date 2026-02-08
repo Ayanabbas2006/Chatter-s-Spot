@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/favicon1-nobg.png">
+    <title>Chatter's Spot-Chats</title>
+<style>
+    body {
+    margin: 0;
+    background-color: #0f172a;
+    font-family: sans-serif;
+}
+
+header {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    gap: 10px;
+    background-color: rgb(32, 193, 218);
+    color: white;
+    box-sizing: border-box;
+}
+
+header p {
+    white-space: nowrap;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+main {
+    display: flex;
+    height: calc(100vh - 64px);
+    overflow: hidden; 
+}
+
+.sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    background-color: #111827;
+    overflow-y: auto;
+    padding: 10px 5px;
+    box-sizing: border-box;
+    border-right: 1px solid #333;
+    transition: transform 0.3s ease;
+}
+.sidebar.closed {
+    transform: translateX(-100%);
+}
+.chats {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    color: white;
+    background-color: #111827;
+    overflow: hidden;
+}
+
+.search-bar {
+    width:85%;
+    position: sticky;
+    top: 0;
+    padding: 8px 0;
+    background: #111827;
+    z-index: 10;
+}
+
+.search-input {
+    width: 100%;
+    padding: 8px 12px;
+    padding-left:30px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    background: #00000042;
+    color: white;
+}
+.header {
+    background-color: #514f4f5e;
+    color: white;
+    padding: 2px;
+    padding-left: 8px;
+}
+.msg-container {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.btn{
+    display: none;
+}
+    .search-icon
+    {
+        padding:5px;
+        position: absolute;
+        left:0;
+        top:50%;
+        transform: translateY(-50%);
+    }
+.msg {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 12px;
+    word-wrap: break-word;
+}
+
+.incoming {
+    align-self: flex-start;
+    background-color: #1e293b;
+}
+
+.outgoing {
+    align-self: flex-end;
+    background-color: #0ea5e9;
+}
+
+.input-area {
+    display: flex;
+    gap: 5px;
+    padding: 10px;
+    background: #111827;
+}
+
+#msgInput {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+}
+
+#sendBtn {
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #0ea5e9;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.chat-item {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+    cursor: pointer;
+}
+
+.chat-item.selected {
+    background-color: #0ea5e9; 
+    color: black;
+}
+
+
+@media(max-width:786px){
+    .sidebar {
+        position: absolute;
+        left: 0;
+        width:180px;
+        top: 64px;
+        height: calc(100vh - 64px);
+        z-index: 1000;
+        background-color: #111827;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.closed {
+        transform: translateX(-100%);
+    }
+
+    .chats {
+        position: absolute;
+        top: 64px;
+        left: 180px;
+        right: 0;
+        bottom: 0;
+        transition: left 0.3s ease;
+    }
+    .btn{
+        left:0;
+        background-color: #0ea5e9;
+    }
+    .chats.fullscreen {
+        left: 0;
+        right: 0;
+    }
+}
+@media (min-width: 768px) {
+    .sidebar {
+        transform: none !important;
+    }
+}
+</style>
+</head>
+<body>
+    <header>
+        <button id="openBtn" class="btn">></button>
+        <p>Chatter's Spot</p>
+    </header>
+    <main id="Main">
+        <div class="sidebar" id="sideBar">
+            <p>Welcome {{user}}! </p>
+            <div class="search-bar">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search a Chat!">
+                <span class="search-icon">🔍</span>
+            </div> 
+            {% for u in users %}
+            <div class="chat-item">{{u[0]}}</div>
+            {% endfor %}
+        </div>
+        <div class="chats" id="Chats">
+            <div class="header">
+                <h3 id="variable">{{user_}}</h3>
+            </div>
+            <div class="msg-container" id="msgContainer">
+            </div>
+            <div class="input-area">
+                <input type="text" id="msgInput" placeholder="Type a message">
+                <button id="sendBtn">Send</button>
+            </div>
+        </div>
+
+    </main>
+<script>
+
+const sidebar = document.getElementById("sideBar");
+const openBtn = document.getElementById("openBtn");
+const chats = document.getElementById("Chats");
+const main= document.getElementById("Main");
+main.addEventListener("click", () => {
+    sidebar.classList.toggle("closed", true);
+    chats.classList.toggle("fullscreen",true);
+    openBtn.style.display="inline";
+});
+openBtn.addEventListener("click",()=>{
+    sidebar.classList.toggle("closed", false);
+    chats.classList.toggle("fullscreen",false);
+    openBtn.style.display="none";
+
+})
+const searchInput = document.getElementById('searchInput');
+const items = document.querySelectorAll('.chat-item');
+
+let debounceTimer;
+function debounceSearch(fn,delay){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout( fn, delay)
+}
+searchInput.addEventListener('input', ()=> {
+    debounceSearch(()=>{
+const query = searchInput.value.toLowerCase();
+
+items.forEach(item => {
+const text = item.textContent.toLowerCase();
+if (text.includes(query)) {
+    item.hidden=false;
+    } else {
+    item.hidden =true;
+    }
+});
+},300);
+});
+const sendBtn = document.getElementById("sendBtn");
+const msgInput = document.getElementById("msgInput");
+const msgContainer = document.getElementById("msgContainer");
+const chatItems = document.querySelectorAll(".chat-item");
+
+let currentUser = "{{user}}";
+let selectedUser = null;
+
+function renderMessages(messages) {
+    msgContainer.innerHTML = "";
+    messages.forEach(msg => {
+        const div = document.createElement("div");
+        div.classList.add("msg", msg.type);
+        div.innerText = msg.content;
+        msgContainer.appendChild(div);
+    });
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+}
+
+async function fetchMessages(user1, user2) {
+    document.getElementById("variable").innerHTML = user2;   
+    const res = await fetch(`/get_messages/?usr1=${user1}&usr2=${user2}`);
+    const data = await res.json();
+    if (data.status === "success") {
+        renderMessages(data.messages);
+    }
+}
+
+async function sendMessage() {
+    const msg = msgInput.value.trim();
+    if (!msg || !selectedUser) return;
+
+    const formData = new FormData();
+    formData.append("sender", currentUser);
+    formData.append("receiver", selectedUser);
+    formData.append("content", msg);
+
+    const res = await fetch("/send_message/", { method: "POST", body: formData });
+    const data = await res.json();
+
+    if (data.status === "success") {
+        const msgDiv = document.createElement("div");
+        msgDiv.classList.add("msg", "outgoing");
+        msgDiv.innerText = data.message;
+        msgContainer.appendChild(msgDiv);
+        msgInput.value = "";
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+}
+
+sendBtn.addEventListener("click", sendMessage);
+msgInput.addEventListener("keypress", e => {
+    if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+    }
+});
+chatItems.forEach(item => {
+    item.addEventListener("click", async () => {
+        chatItems.forEach(i => i.classList.remove("selected"));
+        item.classList.add("selected");
+        selectedUser = item.innerText.trim();
+        await fetchMessages(currentUser, selectedUser);
+    });
+});
+setInterval(() => {
+    if (selectedUser) {
+        fetchMessages(currentUser, selectedUser);
+    }
+}, 2000);
+</script>
+</body>
+</html>

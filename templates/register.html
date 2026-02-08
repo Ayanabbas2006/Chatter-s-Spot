@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="static/favicon1-nobg.png">
+    <title>Chatter's Spot-Register</title>
+    <style>
+        /* Top bar */
+        
+        header div {
+            height: 64px;
+            display: flex;
+            align-items: center;
+            padding: 0px 24px;
+            gap: 10px;
+            color: white;
+            box-sizing: border-box;
+            background-color: rgb(32, 193, 218);
+        }
+        
+        .home {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+        
+        .topcontent {
+            white-space: nowrap;
+            font-size: 2rem;
+            font-weight: 600;
+            padding: 10px;
+        }
+        /*body*/
+        
+        body {
+            margin: 0;
+        }
+        /*Hero*/
+        
+        .hero {
+            height: calc(30vh - 64px);
+            background-image: url("static/images/scene.webp");
+            background-size: cover;
+            background-position: center;
+        }
+        /*Main*/
+        
+        main {
+            min-height: calc(100vh - 64px);
+            display: flex;
+            padding: 30px;
+            justify-content: center;
+            align-items: start;
+            background-color: #cccdd0;
+        }
+        /*Card*/
+        
+        .card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            box-sizing: border-box;
+        }
+        /*Title*/
+        
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1px;
+        }
+        /*Subtitle*/
+        
+        .subtitle {
+            font-size: 14px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        /*equal gaps in form*/
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        /*merge fields*/
+        
+        .form>div {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        /*invisible margin*/
+        
+        .title,
+        .subtitle,
+        .reg {
+            margin: 0;
+        }
+        /*form labels*/
+        
+        .form label {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        /*form inputs*/
+        
+        .form input {
+            padding: 12px 14px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+        }
+        
+        .form input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        /*form button*/
+        
+        form .button {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 12px;
+            background-color: rgb(32, 193, 218);
+            color: white;
+        }
+        /*Login*/
+        
+        .log {
+            display: flex;
+            justify-content: center;
+            padding: 2px;
+        }
+        
+        .log a {
+            font-size: 16px;
+            padding-left: 5px;
+            color: #2563eb;
+            text-decoration: none;
+        }
+        /*input wrapper*/
+        
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-wrapper .icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+        
+        .input-wrapper input {
+            box-sizing: border-box;
+            padding: 12px 14px 12px 40px;
+            font-size: 15px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
+            width: 100%;
+        }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: #2563eb;
+        }
+        
+        .input-wrapper input:focus+.icon,
+        .input-wrapper input:focus~.icon {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <!--Top bar-->
+        <div>
+            <h2 class="topcontent">Chatter's Spot</h2>
+        </div>
+    </header>
+
+    <!--Main body-->
+    <main>
+        <div class="card">
+            <form class="form" id="regform" method="POST" action="/register_user/">
+                <!--Title and subtitles-->
+                <h2 class="title">Create Your Account</h2>
+                <h4 class="subtitle">Join our community</h4>
+                <h2 class="reg" style="padding-top:30px;">Register</h2>
+                <!--Main Form-->
+                <div class="name">
+                    <label for="name">Full Name</label>
+                    <!--Wrapper-->
+                    <div class="input-wrapper">
+                        <span class="icon">🪪</span>
+                        <input type="text" id="name" name="name" placeholder="Your Name" required/>
+                    </div>
+                </div>
+                <div class="username">
+                    <label for="username">Username</label>
+                    <!--Wrapper-->
+                    <div class="input-wrapper">
+                        <span class="icon">📧</span>
+                        <input type="text" name="username" id="username" placeholder="username" required/>
+                    </div>
+                </div>
+                <div class="password">
+                    <label for="password">Password</label>
+                    <!--Wrapper-->
+                    <div class="input-wrapper">
+                        <span class="icon">🔒</span>
+                        <input type="password" id="password" name="password" placeholder="********" required/>
+                    </div>
+                </div>
+                <div>
+                    <input class="button" type="submit" value="Register">
+                </div>
+                <div class="log">
+                    <p class="log">Already have an account? <a href="/login">Log in</a></p>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
