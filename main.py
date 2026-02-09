@@ -45,24 +45,24 @@ def register(request: Request):
     return templates.TemplateResponse("register.html",{"request":request})
 
 @app.post("/register_user/")
-def reg(name: str = Form('name'), username: str= Form("username"), password: str= Form("password")):
+def reg(request:Request,name: str = Form('name'), username: str= Form("username"), password: str= Form("password")):
     with get_db() as db:
         with db.cursor() as cur:
             cur.execute("select * from users where name=%s",(name,))
             name_data=cur.fetchone()
             if name_data:
-                return {"Msg":"Name is already taken"}
+                return templates.TemplateResponse('register.html',{'request':request,'msg':"Name already taken!"})
             cur.execute("select * from users where name=%s",(username,))
             username_data=cur.fetchone()
             if username_data:
-                return {"Msg":"Username is already taken"}
+                return templates.TemplateResponse('register.html',{'request':request,'msg':"Username already taken!"})
             hashed_password=ph.hash(password)
             cur.execute("insert into users (username,password,name) values (%s,%s,%s)",(username,hashed_password,name))
             db.commit()
-    return {"Msg":"User Registered Successfully"}
+    return templates.TemplateResponse("login.html",{"request":request,"msg" : "Registered Successfully! Try login!"})
 
 @app.post("/login_user/")
-def log(username : str= Form("username"), password:str = Form("password")):
+def log(request: Request,username : str= Form("username"), password:str = Form("password")):
     with get_db() as db:
         with db.cursor() as cur:
             cur.execute("select * from users where username=(%s)",(username,))
@@ -74,9 +74,9 @@ def log(username : str= Form("username"), password:str = Form("password")):
             res.set_cookie("session_name",username)
             return res
         except Exception:
-            raise HTTPException(401, "Incorrect password!")
+            return templates.TemplateResponse("login.html",{"request":request,"msg" : "incorrect password"})
     else:
-        raise HTTPException(404,"Username not found! Try register!")
+        return templates.TemplateResponse("login.html",{"request":request,"msg" : f"User {username} not found! Try register!"})
 
 @app.get("/home")
 def home( request: Request, session_name: str = Cookie(None)):
